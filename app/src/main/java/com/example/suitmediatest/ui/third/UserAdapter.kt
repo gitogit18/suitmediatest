@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.suitmediatest.R
 import com.example.suitmediatest.data.model.User
 import com.example.suitmediatest.databinding.ItemUserBinding
 
@@ -41,7 +42,11 @@ class UserAdapter(
         fun bind(user: User) {
 
             binding.tvName.text =
-                "${user.first_name} ${user.last_name}"
+                binding.root.context.getString(
+                    R.string.user_full_name,
+                    user.first_name,
+                    user.last_name
+                )
 
             binding.tvEmail.text = user.email
 

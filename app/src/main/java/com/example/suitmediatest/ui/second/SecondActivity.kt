@@ -6,7 +6,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.suitmediatest.R
 import com.example.suitmediatest.databinding.ActivitySecondBinding
 import com.example.suitmediatest.ui.third.ThirdActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,7 +34,7 @@ class SecondActivity : AppCompatActivity() {
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { _, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             binding.topAppBar.setPadding(0, systemBars.top, 0, 0)
             binding.btnChooseUser.translationY = -systemBars.bottom.toFloat()
