@@ -33,23 +33,8 @@ The application consists of three screens and demonstrates palindrome validation
 
 ## Screenshots
 
-### First Screen
 
-![First Screen](screenshots/first_screen.png)
-
-### Second Screen
-
-![Second Screen](screenshots/second_screen.png)
-
-### Third Screen
-
-![Third Screen](screenshots/third_screen.png)
-
-### User Selection
-
-![Selected User](screenshots/selected_user.png)
-
-> Place the UI screenshots inside the `screenshots/` directory using the filenames shown above.
+<img width="500" alt="UI" src="https://github.com/user-attachments/assets/a3c63721-3672-427b-b904-a5c70768439e" />
 
 ---
 
@@ -93,3 +78,16 @@ UI / View
         │
         ▼
     ReqRes API
+```
+
+  ##  How to Run
+```
+1. Clone this repository.
+2. git clone <YOUR_REPOSITORY_URL>
+3. Open the project in Android Studio.
+4. Add your ReqRes API key to local.properties.
+5. REQRES_API_KEY=YOUR_API_KEY
+6. Sync the Gradle project.
+7. Connect an Android device or start an Android Emulator.
+8. Run the application.
+```
