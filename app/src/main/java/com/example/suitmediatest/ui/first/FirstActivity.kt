@@ -7,7 +7,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.suitmediatest.R
 import com.example.suitmediatest.databinding.ActivityFirstBinding
 import com.example.suitmediatest.ui.second.SecondActivity
 
