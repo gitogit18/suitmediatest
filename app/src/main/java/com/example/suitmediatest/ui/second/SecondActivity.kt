@@ -1,21 +1,42 @@
 package com.example.suitmediatest.ui.second
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.suitmediatest.R
+import com.example.suitmediatest.databinding.ActivitySecondBinding
+import com.example.suitmediatest.ui.third.ThirdActivity
 
 class SecondActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySecondBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_second)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        binding = ActivitySecondBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            binding.topAppBar.setPadding(0, systemBars.top, 0, 0)
+            binding.btnChooseUser.translationY = -systemBars.bottom.toFloat()
             insets
+        }
+
+        val name = intent.getStringExtra("USER_NAME")
+
+        binding.tvName.text = name
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+
+        binding.btnChooseUser.setOnClickListener {
+            val intent = Intent(this, ThirdActivity::class.java)
+            startActivity(intent)
         }
     }
 }
