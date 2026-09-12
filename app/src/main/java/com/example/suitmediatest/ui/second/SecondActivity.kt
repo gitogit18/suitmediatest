@@ -9,9 +9,25 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.suitmediatest.R
 import com.example.suitmediatest.databinding.ActivitySecondBinding
 import com.example.suitmediatest.ui.third.ThirdActivity
+import androidx.activity.result.contract.ActivityResultContracts
 
 class SecondActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySecondBinding
+
+    private val chooseUserLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+
+            if (result.resultCode == RESULT_OK) {
+
+                val selectedUserName =
+                    result.data?.getStringExtra("SELECTED_USER_NAME")
+
+                binding.tvSelectedUser.text =
+                    selectedUserName
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +52,7 @@ class SecondActivity : AppCompatActivity() {
 
         binding.btnChooseUser.setOnClickListener {
             val intent = Intent(this, ThirdActivity::class.java)
-            startActivity(intent)
+            chooseUserLauncher.launch(intent)
         }
     }
 }
