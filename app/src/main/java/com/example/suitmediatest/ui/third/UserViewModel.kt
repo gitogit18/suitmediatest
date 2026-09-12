@@ -10,22 +10,34 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
+
     private val repository = UserRepository(ApiConfig.apiService)
+
     private val _users = MutableStateFlow<List<User>>(emptyList())
     val users: StateFlow<List<User>> = _users
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
+
+    private var currentPage = 1
+    private val perPage = 10
+    private var totalPages = 1
+
+    private var isLoadingMore = false
 
     fun loadUsers() {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
 
+                currentPage = 1
+
                 val response = repository.getUsers(
-                    page = 1,
-                    perPage = 10
+                    page = currentPage,
+                    perPage = perPage
                 )
 
+                totalPages = response.total_pages
                 _users.value = response.data
 
             } catch (e: Exception) {
@@ -33,6 +45,35 @@ class UserViewModel : ViewModel() {
 
             } finally {
                 _isLoading.value = false
+            }
+        }
+    }
+
+    fun loadNextPage() {
+        if (isLoadingMore) return
+        if (currentPage >= totalPages) return
+
+        viewModelScope.launch {
+            try {
+                isLoadingMore = true
+
+                val nextPage = currentPage + 1
+
+                val response = repository.getUsers(
+                    page = nextPage,
+                    perPage = perPage
+                )
+
+                currentPage = nextPage
+                totalPages = response.total_pages
+
+                _users.value = _users.value + response.data
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+            } finally {
+                isLoadingMore = false
             }
         }
     }
