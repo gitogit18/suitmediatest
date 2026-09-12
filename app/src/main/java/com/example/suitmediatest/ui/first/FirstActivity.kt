@@ -41,9 +41,9 @@ class FirstActivity : AppCompatActivity() {
             val result = isPalindrome(palindromeText)
 
             val message = if (result) {
-                "$palindromeText is Palindrome"
+                 "isPalindrome"
             } else {
-                "$palindromeText Not Palindrome"
+                 "Not Palindrome"
             }
 
             AlertDialog.Builder(this)
