@@ -1,5 +1,6 @@
 package com.example.suitmediatest.ui.third
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.suitmediatest.data.api.ApiConfig
@@ -62,6 +63,11 @@ class UserViewModel : ViewModel() {
                 val response = repository.getUsers(
                     page = nextPage,
                     perPage = perPage
+                )
+
+                Log.d(
+                    "PAGINATION",
+                    "page=$nextPage, received=${response.data.size}, totalPages=${response.total_pages}"
                 )
 
                 currentPage = nextPage

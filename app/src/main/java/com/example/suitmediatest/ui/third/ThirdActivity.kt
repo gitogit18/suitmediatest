@@ -1,5 +1,6 @@
 package com.example.suitmediatest.ui.third
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -11,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.suitmediatest.databinding.ActivityThirdBinding
 import kotlinx.coroutines.launch
 
@@ -27,14 +29,48 @@ class ThirdActivity : AppCompatActivity() {
         binding = ActivityThirdBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        userAdapter = UserAdapter { _ ->
+        userAdapter = UserAdapter { user ->
+            val selectedUserName =
+                "${user.first_name} ${user.last_name}"
 
+            val resultIntent = Intent().apply {
+                putExtra("SELECTED_USER_NAME", selectedUserName)
+            }
+
+            setResult(RESULT_OK, resultIntent)
+            finish()
         }
 
         binding.rvUsers.apply {
             layoutManager = LinearLayoutManager(this@ThirdActivity)
             adapter = userAdapter
         }
+
+        binding.rvUsers.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+
+                override fun onScrolled(
+                    recyclerView: RecyclerView,
+                    dx: Int,
+                    dy: Int
+                ) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (dy <= 0) return
+
+                    val layoutManager =
+                        recyclerView.layoutManager as LinearLayoutManager
+
+                    val totalItemCount = layoutManager.itemCount
+                    val lastVisibleItem =
+                        layoutManager.findLastVisibleItemPosition()
+
+                    if (lastVisibleItem >= totalItemCount - 1) {
+                        viewModel.loadNextPage()
+                    }
+                }
+            }
+        )
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
