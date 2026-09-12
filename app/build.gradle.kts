@@ -60,5 +60,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
-    implementation(libs.coil.kt)
+    implementation(libs.coil)
+    implementation(libs.androidx.swiperefreshlayout)
 }

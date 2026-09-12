@@ -1,6 +1,7 @@
 package com.example.suitmediatest.ui.third
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -37,8 +38,31 @@ class ThirdActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.users.collect { users ->
-                    userAdapter.submitList(users)
+                launch {
+                    viewModel.users.collect { users ->
+                        userAdapter.submitList(users)
+                    }
+                }
+
+                launch {
+                    viewModel.isLoading.collect { isLoading ->
+                        binding.progressBar.visibility =
+                            if (isLoading) {
+                                View.VISIBLE
+                            } else {
+                                View.GONE
+                            }
+
+                        binding.swipeRefresh.isRefreshing =
+                            isLoading && userAdapter.currentList.isNotEmpty()
+
+                        binding.tvEmptyState.visibility =
+                            if (!isLoading && viewModel.users.value.isEmpty()) {
+                                View.VISIBLE
+                            } else {
+                                View.GONE
+                            }
+                    }
                 }
             }
         }
@@ -51,8 +75,13 @@ class ThirdActivity : AppCompatActivity() {
             insets
         }
 
+
         binding.btnBack.setOnClickListener {
             finish()
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.loadUsers()
         }
 
     }
